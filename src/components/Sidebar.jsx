@@ -4,11 +4,12 @@ import 'react-clock/dist/Clock.css';
 import { db, auth } from '../firebase'; // <--- Import auth here
 import { signOut } from 'firebase/auth'; // <--- Import signOut
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { useTheme } from '../context/ThemeContext';
 import { 
   ListTodo, BookOpen, CheckSquare, FileText, 
   Clock as ClockIcon, CalendarDays, GraduationCap,
   Wallet, LayoutGrid, CheckSquare as CheckIcon,
-  LogOut, X // <--- Import Icon
+  LogOut, X, Sun, Moon // <--- Import Icon
 } from 'lucide-react';
 
 // Helper to calculate time progress
@@ -37,6 +38,7 @@ const getTimeProgress = () => {
 };
 
 export default function Sidebar({ userId, onOpenCourseModal, isOpen, onClose }) {
+  const { theme, toggleTheme } = useTheme();
   const [value, setValue] = useState(new Date());
   const [progress, setProgress] = useState(getTimeProgress());
   const [goals, setGoals] = useState([]);
@@ -77,32 +79,32 @@ export default function Sidebar({ userId, onOpenCourseModal, isOpen, onClose }) 
   };
 
   return (
-    <aside className={`w-64 bg-[#0a0a0a] border-r border-[#1f1f1f] flex flex-col h-screen overflow-y-auto no-scrollbar fixed left-0 top-0 z-50 font-sans text-gray-300 transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+    <aside className={`w-64 bg-app-sidebar border-r border-app-border flex flex-col h-screen overflow-y-auto no-scrollbar fixed left-0 top-0 z-50 font-sans text-app-muted transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
       
       {/* HEADER & CLOCK */}
-      <div className="p-6 pb-2 flex flex-col items-center border-b border-[#1f1f1f]/50 relative">
+      <div className="p-6 pb-2 flex flex-col items-center border-b border-app-border/50 relative">
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 lg:hidden text-gray-400 hover:text-white"
+          className="absolute top-4 right-4 lg:hidden text-app-muted hover:text-app-text"
         >
           <X size={20} />
         </button>
-        <h1 className="text-lg font-bold text-white mb-6 tracking-wide">Student Life OS</h1>
-        <div className="mb-2 invert opacity-80">
+        <h1 className="text-lg font-bold text-app-text mb-6 tracking-wide">Student Life OS</h1>
+        <div className="mb-2 invert opacity-80 dark:invert-0">
           <Clock value={value} size={110} renderNumbers={false} hourHandWidth={2} minuteHandWidth={2} secondHandWidth={1} />
         </div>
         <div className="text-center mt-4">
-           <p className="text-xl font-mono text-white font-bold tracking-widest">
+           <p className="text-xl font-mono text-app-text font-bold tracking-widest">
              {value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
            </p>
-           <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">
+           <p className="text-[10px] text-app-muted uppercase tracking-widest mt-1">
              {value.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
            </p>
         </div>
       </div>
 
       {/* PROGRESS BARS */}
-      <div className="p-6 py-8 space-y-3 border-b border-[#1f1f1f]/50">
+      <div className="p-6 py-8 space-y-3 border-b border-app-border/50">
          <ProgressBar label="Year" value={progress.year} />
          <ProgressBar label="Month" value={progress.month} />
          <ProgressBar label="Week" value={progress.week} />
@@ -161,10 +163,18 @@ export default function Sidebar({ userId, onOpenCourseModal, isOpen, onClose }) 
             <NavLink icon={<Wallet size={14} />} label="Marketplace" onClick={() => scrollToSection('shop-section')} />
          </nav>
       </div>
-      <div className="p-6 mt-auto border-t border-[#1f1f1f]">
+      <div className="p-6 mt-auto border-t border-app-border space-y-2">
+         <button 
+           onClick={toggleTheme}
+           className="flex items-center gap-3 w-full px-2 py-2 rounded text-xs text-app-muted hover:text-app-text hover:bg-app-hover transition-all group"
+         >
+           {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+           <span className="font-bold">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+         </button>
+
          <button 
            onClick={handleLogout}
-           className="flex items-center gap-3 w-full px-2 py-2 rounded text-xs text-gray-400 hover:text-white hover:bg-red-500/10 transition-all group"
+           className="flex items-center gap-3 w-full px-2 py-2 rounded text-xs text-app-muted hover:text-white hover:bg-red-500/10 transition-all group"
          >
            <LogOut size={14} className="group-hover:text-red-500 transition-colors" />
            <span className="font-bold group-hover:text-red-500 transition-colors">Log Out</span>
@@ -178,8 +188,8 @@ export default function Sidebar({ userId, onOpenCourseModal, isOpen, onClose }) 
 /* --- REUSABLE SUB-COMPONENTS --- */
 function ActionBtn({ icon, label, onClick }) {
    return (
-      <button onClick={onClick} className="flex items-center gap-3 w-full px-2 py-1.5 rounded text-xs text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-all group text-left">
-         <span className="text-gray-500 group-hover:text-white transition-colors">{icon}</span>
+      <button onClick={onClick} className="flex items-center gap-3 w-full px-2 py-1.5 rounded text-xs text-app-muted hover:text-app-text hover:bg-app-hover transition-all group text-left">
+         <span className="text-app-muted group-hover:text-app-text transition-colors">{icon}</span>
          <span className="font-medium">{label}</span>
       </button>
    );
@@ -187,15 +197,15 @@ function ActionBtn({ icon, label, onClick }) {
 
 function GoalCard({ label, progress, completed, active }) {
    return (
-      <div className={`p-3 rounded-lg border ${active ? 'bg-[#141414] border-[#2d2d2d]' : 'bg-[#0a0a0a] border-[#1f1f1f] opacity-60 hover:opacity-100'} transition-all cursor-pointer group`}>
+      <div className={`p-3 rounded-lg border ${active ? 'bg-app-card border-app-border' : 'bg-app-sidebar border-app-border opacity-60 hover:opacity-100'} transition-all cursor-pointer group`}>
          <div className="flex items-center gap-2 mb-2">
-            {completed ? <CheckSquare size={12} className="text-white" /> : <div className="w-3 h-3 border border-gray-600 rounded-[2px]"></div>}
-            <span className="text-[10px] font-bold text-gray-300 group-hover:text-white">{label}</span>
+            {completed ? <CheckSquare size={12} className="text-app-text" /> : <div className="w-3 h-3 border border-app-muted rounded-[2px]"></div>}
+            <span className="text-[10px] font-bold text-app-muted group-hover:text-app-text">{label}</span>
          </div>
          <div className="flex items-center gap-2">
-            <span className="text-[9px] text-gray-500 w-6">{progress}%</span>
-            <div className="flex-1 h-1 bg-[#1f1f1f] rounded-full overflow-hidden">
-               <div className={`h-full ${completed ? 'bg-white' : 'bg-orange-400'}`} style={{ width: `${progress}%` }}></div>
+            <span className="text-[9px] text-app-muted w-6">{progress}%</span>
+            <div className="flex-1 h-1 bg-app-border rounded-full overflow-hidden">
+               <div className={`h-full ${completed ? 'bg-app-text' : 'bg-orange-400'}`} style={{ width: `${progress}%` }}></div>
             </div>
          </div>
       </div>
@@ -204,7 +214,7 @@ function GoalCard({ label, progress, completed, active }) {
 
 function NavLink({ icon, label, onClick }) {
    return (
-      <button onClick={onClick} className="flex items-center gap-3 w-full px-2 py-1.5 rounded text-xs text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors text-left">
+      <button onClick={onClick} className="flex items-center gap-3 w-full px-2 py-1.5 rounded text-xs text-app-muted hover:text-app-text hover:bg-app-hover transition-colors text-left">
          {icon}
          <span>{label}</span>
       </button>
@@ -214,11 +224,11 @@ function NavLink({ icon, label, onClick }) {
 function ProgressBar({ label, value }) {
   return (
     <div className="flex items-center gap-3">
-       <div className="w-12 h-6 border border-[#2d2d2d] rounded-sm bg-[#0a0a0a] p-0.5">
-          <div className="h-full bg-white" style={{ width: `${value}%` }}></div>
+       <div className="w-12 h-6 border border-app-border rounded-sm bg-app-sidebar p-0.5">
+          <div className="h-full bg-app-text" style={{ width: `${value}%` }}></div>
        </div>
        <div className="flex flex-col">
-          <span className="text-[10px] text-gray-500 uppercase tracking-wider">{label}: {value}%</span>
+          <span className="text-[10px] text-app-muted uppercase tracking-wider">{label}: {value}%</span>
        </div>
     </div>
   );
@@ -226,7 +236,7 @@ function ProgressBar({ label, value }) {
 
 function SectionTitle({ title }) {
    return (
-      <h3 className="text-[10px] font-bold text-gray-200 uppercase tracking-[0.2em] mb-4 pl-1 border-l-2 border-transparent hover:border-white transition-colors cursor-default">
+      <h3 className="text-[10px] font-bold text-app-text uppercase tracking-[0.2em] mb-4 pl-1 border-l-2 border-transparent hover:border-app-text transition-colors cursor-default">
          {title}
       </h3>
    );

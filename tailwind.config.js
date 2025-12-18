@@ -7,6 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
+        app: {
+           main: 'var(--bg-main)',
+           sidebar: 'var(--bg-sidebar)',
+           card: 'var(--bg-card)',
+           hover: 'var(--bg-hover)',
+           input: 'var(--bg-input)',
+           border: 'var(--border-color)',
+           text: 'var(--text-main)',
+           muted: 'var(--text-muted)',
+        },
         gray: {
           900: '#121212', // Card background
           800: '#1f1f1f', // Border/secondary background

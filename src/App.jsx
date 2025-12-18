@@ -32,11 +32,11 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  if (loading) return <div className="bg-[#050505] h-screen text-white flex items-center justify-center">Loading OS...</div>;
+  if (loading) return <div className="bg-app-main h-screen text-app-text flex items-center justify-center">Loading OS...</div>;
   if (!user) return <Login />;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#e5e5e5] flex font-sans selection:bg-green-500/30 relative">
+    <div className="min-h-screen bg-app-main text-app-text flex font-sans selection:bg-green-500/30 relative transition-colors duration-300">
       
       {/* SIDEBAR: Pass the function to open the modal */}
       <Sidebar 
@@ -92,9 +92,9 @@ function App() {
           <section className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               <div className="lg:col-span-3">
                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Task Manager</h2>
-                    <div className="flex gap-2 text-[10px] text-gray-500">
-                        <span className="text-white border-b border-white pb-0.5">This Week</span>
+                    <h2 className="text-xs font-bold text-app-muted uppercase tracking-widest">Task Manager</h2>
+                    <div className="flex gap-2 text-[10px] text-app-muted">
+                        <span className="text-app-text border-b border-app-text pb-0.5">This Week</span>
                         <span>Unrelated Task</span>
                     </div>
                  </div>
@@ -102,7 +102,7 @@ function App() {
               </div>
 
               <div className="lg:col-span-1 space-y-4">
-                  <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Player Status</h2>
+                  <h2 className="text-xs font-bold text-app-muted uppercase tracking-widest mb-4">Player Status</h2>
                   <StatusWindow userId={user.uid} />
               </div>
           </section>

@@ -30,19 +30,19 @@ export default function StatusWindow({ userId }) {
   const hpPercent = Math.max(0, (currentHP / maxHP) * 100);
 
   return (
-    <div className="bg-[#0f0f0f] border border-[#1f1f1f] rounded-xl p-5 h-full">
+    <div className="bg-app-card border border-app-border rounded-xl p-5 h-full">
       {/* Header with Level and Coins */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#1a1a1a] rounded-full flex items-center justify-center border border-[#2d2d2d] text-gray-400">
+          <div className="w-10 h-10 bg-app-hover rounded-full flex items-center justify-center border border-app-border text-app-muted">
             <User size={20} />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white leading-none">Player Status</h3>
+            <h3 className="text-sm font-bold text-app-text leading-none">Player Status</h3>
             <p className="text-xs text-green-500 font-bold mt-1">Level {stats.level}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 bg-[#1a1a1a] px-3 py-1.5 rounded-full border border-[#2d2d2d]">
+        <div className="flex items-center gap-2 bg-app-hover px-3 py-1.5 rounded-full border border-app-border">
             <Coins size={14} className="text-yellow-500" />
             <span className="text-sm font-bold text-yellow-500">{stats.coins}</span>
         </div>
@@ -53,12 +53,12 @@ export default function StatusWindow({ userId }) {
         {/* XP BAR */}
         <div>
           <div className="flex justify-between mb-2 text-xs">
-            <span className="flex items-center gap-1.5 text-gray-400 font-medium">
+            <span className="flex items-center gap-1.5 text-app-muted font-medium">
               <Zap size={12} className="text-green-500" /> Experience
             </span>
-            <span className="text-gray-500 font-mono">{stats.currentXP} / {safeNextLevel}</span>
+            <span className="text-app-muted font-mono">{stats.currentXP} / {safeNextLevel}</span>
           </div>
-          <div className="w-full h-2 bg-[#1a1a1a] rounded-full overflow-hidden border border-[#2d2d2d]">
+          <div className="w-full h-2 bg-app-hover rounded-full overflow-hidden border border-app-border">
             <motion.div 
               className="h-full bg-green-500" 
               initial={{ width: 0 }}
@@ -71,12 +71,12 @@ export default function StatusWindow({ userId }) {
         {/* HP BAR */}
         <div>
           <div className="flex justify-between mb-2 text-xs">
-            <span className="flex items-center gap-1.5 text-gray-400 font-medium">
+            <span className="flex items-center gap-1.5 text-app-muted font-medium">
               <Heart size={12} className="text-red-500" /> Health
             </span>
-            <span className="text-gray-500 font-mono">{currentHP} / {maxHP}</span>
+            <span className="text-app-muted font-mono">{currentHP} / {maxHP}</span>
           </div>
-          <div className="w-full h-2 bg-[#1a1a1a] rounded-full overflow-hidden border border-[#2d2d2d]">
+          <div className="w-full h-2 bg-app-hover rounded-full overflow-hidden border border-app-border">
             <motion.div 
               className="h-full bg-red-600" 
               initial={{ width: "100%" }}
