@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Menu } from 'lucide-react';
 
 // --- Configuration ---
 
@@ -22,7 +23,7 @@ const getTimeOfDay = (hour) => {
 const ALTERNATION_SPEED = 15000; // Every 15 seconds
 
 
-const DynamicHeader = () => {
+const DynamicHeader = ({ onToggleSidebar }) => {
   // State to hold the path of the image currently being displayed
   // Initialize with a safe default (e.g., morning 1) to avoid empty render
   const [currentBgImage, setCurrentBgImage] = useState(imageAssets.morning[0]);
@@ -100,8 +101,17 @@ const DynamicHeader = () => {
 
 
   return (
-    <header style={headerStyle}>
+    <header style={headerStyle} className="relative">
         <div style={overlayStyle}></div>
+        
+        {/* Mobile Menu Button */}
+        <button 
+            onClick={onToggleSidebar}
+            className="absolute top-4 left-4 z-30 lg:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+        >
+            <Menu size={24} />
+        </button>
+
         <h1 style={textStyle}>Welcome to My World</h1>
     </header>
   );

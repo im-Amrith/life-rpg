@@ -102,20 +102,20 @@ export default function QuestBoard({ userId }) {
     <div id="task-manager" className="bg-[#0f0f0f] border border-[#1f1f1f] rounded-xl overflow-hidden h-full flex flex-col">
       
       {/* --- HEADER --- */}
-      <div className="p-5 border-b border-[#1f1f1f] flex items-center justify-between">
+      <div className="p-5 border-b border-[#1f1f1f] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h2 className="text-lg font-bold text-white">Task Manager</h2>
           <p className="text-xs text-gray-500 flex items-center gap-2 mt-1">
             <Calendar size={12} /> {getWeekRange()}
           </p>
         </div>
-        <div className="flex gap-3">
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-[#1a1a1a] border border-[#2d2d2d] rounded-lg text-xs text-gray-300 hover:bg-[#252525] transition-colors">
+        <div className="flex gap-3 w-full md:w-auto">
+            <button className="flex-1 md:flex-none justify-center flex items-center gap-2 px-3 py-1.5 bg-[#1a1a1a] border border-[#2d2d2d] rounded-lg text-xs text-gray-300 hover:bg-[#252525] transition-colors">
               <Filter size={12} /> All work <ChevronDown size={12} />
             </button>
             <button 
               onClick={() => setIsAdding(!isAdding)}
-              className="flex items-center gap-1 px-3 py-1.5 bg-white text-black text-xs font-bold rounded-lg hover:bg-gray-200 transition-colors"
+              className="flex-1 md:flex-none justify-center flex items-center gap-1 px-3 py-1.5 bg-white text-black text-xs font-bold rounded-lg hover:bg-gray-200 transition-colors"
             >
               <Plus size={14} /> New Task
             </button>
@@ -175,10 +175,10 @@ export default function QuestBoard({ userId }) {
               key={habit.id}
               layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }}
               onClick={() => handleInteraction(habit)}
-              className="group grid grid-cols-12 items-center gap-4 p-3 rounded-lg hover:bg-[#1a1a1a] border border-transparent hover:border-[#2d2d2d] transition-all cursor-pointer mb-1"
+              className="group grid grid-cols-12 items-center gap-y-3 gap-x-2 md:gap-4 p-3 rounded-lg hover:bg-[#1a1a1a] border border-transparent hover:border-[#2d2d2d] transition-all cursor-pointer mb-1"
             >
               {/* COL 1: Checkbox (1 col) */}
-              <div className="col-span-1 flex items-center justify-center">
+              <div className="col-span-2 md:col-span-1 flex items-center justify-center">
                  <div className={`w-5 h-5 rounded-full border-[1.5px] flex items-center justify-center transition-all
                     ${habit.type === 'good' ? 'border-gray-600 group-hover:border-green-500 group-hover:text-green-500' : 'border-red-500/50 text-red-500'}
                  `}>
@@ -188,19 +188,19 @@ export default function QuestBoard({ userId }) {
               </div>
 
               {/* COL 2: Title (5 cols) */}
-              <div className="col-span-5">
+              <div className="col-span-10 md:col-span-5">
                  <span className={`text-sm font-medium ${habit.type === 'good' ? 'text-gray-200' : 'text-red-400'}`}>{habit.title}</span>
               </div>
 
               {/* COL 3: Priority (2 cols) */}
-              <div className="col-span-2 text-center">
+              <div className="col-span-4 md:col-span-2 text-center">
                 <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${getPriorityColor(habit.priority)}`}>
                   {habit.priority}
                 </span>
               </div>
 
               {/* COL 4: Status (2 cols) - NEW */}
-              <div className="col-span-2 text-center">
+              <div className="col-span-4 md:col-span-2 text-center">
                  <button 
                     onClick={(e) => toggleStatus(e, habit)}
                     className={`px-3 py-1 rounded-full text-[10px] font-bold flex items-center justify-center gap-1 mx-auto border transition-all hover:brightness-125 ${getStatusColor(habit.status || 'Not Started')}`}
@@ -211,7 +211,7 @@ export default function QuestBoard({ userId }) {
               </div>
               
               {/* COL 5: Due Date (2 cols) */}
-              <div className="col-span-2 text-right">
+              <div className="col-span-4 md:col-span-2 text-right">
                 <span className="text-xs text-gray-500 font-mono group-hover:text-gray-300 transition-colors">
                   {new Date(habit.dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                 </span>

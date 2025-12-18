@@ -8,7 +8,7 @@ import {
   ListTodo, BookOpen, CheckSquare, FileText, 
   Clock as ClockIcon, CalendarDays, GraduationCap,
   Wallet, LayoutGrid, CheckSquare as CheckIcon,
-  LogOut // <--- Import Icon
+  LogOut, X // <--- Import Icon
 } from 'lucide-react';
 
 // Helper to calculate time progress
@@ -36,7 +36,7 @@ const getTimeProgress = () => {
   };
 };
 
-export default function Sidebar({ userId, onOpenCourseModal }) {
+export default function Sidebar({ userId, onOpenCourseModal, isOpen, onClose }) {
   const [value, setValue] = useState(new Date());
   const [progress, setProgress] = useState(getTimeProgress());
   const [goals, setGoals] = useState([]);
@@ -77,10 +77,16 @@ export default function Sidebar({ userId, onOpenCourseModal }) {
   };
 
   return (
-    <aside className="w-64 bg-[#0a0a0a] border-r border-[#1f1f1f] flex flex-col h-screen overflow-y-auto no-scrollbar fixed left-0 top-0 z-50 font-sans text-gray-300">
+    <aside className={`w-64 bg-[#0a0a0a] border-r border-[#1f1f1f] flex flex-col h-screen overflow-y-auto no-scrollbar fixed left-0 top-0 z-50 font-sans text-gray-300 transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
       
       {/* HEADER & CLOCK */}
-      <div className="p-6 pb-2 flex flex-col items-center border-b border-[#1f1f1f]/50">
+      <div className="p-6 pb-2 flex flex-col items-center border-b border-[#1f1f1f]/50 relative">
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 lg:hidden text-gray-400 hover:text-white"
+        >
+          <X size={20} />
+        </button>
         <h1 className="text-lg font-bold text-white mb-6 tracking-wide">Student Life OS</h1>
         <div className="mb-2 invert opacity-80">
           <Clock value={value} size={110} renderNumbers={false} hourHandWidth={2} minuteHandWidth={2} secondHandWidth={1} />

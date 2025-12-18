@@ -22,6 +22,7 @@ function App() {
   
   // State for the "New Course" modal (Lifted up so Sidebar can access it)
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -35,24 +36,34 @@ function App() {
   if (!user) return <Login />;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#e5e5e5] flex font-sans selection:bg-green-500/30">
+    <div className="min-h-screen bg-[#050505] text-[#e5e5e5] flex font-sans selection:bg-green-500/30 relative">
       
       {/* SIDEBAR: Pass the function to open the modal */}
       <Sidebar 
         userId={user.uid} 
-        onOpenCourseModal={() => setIsCourseModalOpen(true)} 
+        onOpenCourseModal={() => setIsCourseModalOpen(true)}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Main Content Area */}
-      <main className="flex-1 ml-64 overflow-y-auto no-scrollbar h-screen flex flex-col">
+      <main className="flex-1 lg:ml-64 overflow-y-auto no-scrollbar h-screen flex flex-col w-full">
         
         {/* HEADER: Full width at the top */}
         <div className="w-full shrink-0">
-            <DynamicHeader />
+            <DynamicHeader onToggleSidebar={() => setIsSidebarOpen(true)} />
         </div>
 
         {/* CONTENT CONTAINER: Padding applied here */}
-        <div className="max-w-[1400px] mx-auto space-y-8 p-10 w-full">
+        <div className="max-w-[1400px] mx-auto space-y-8 p-4 lg:p-10 w-full">
           
           {/* SECTION 1: COURSES */}
           {/* UPDATED: Passing the state props here so the button inside works */}
